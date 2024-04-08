@@ -1,0 +1,21 @@
+name: Profile View Counter
+
+on:
+  schedule:
+    # Runs everyday at 12am UTC
+    - cron: '0 0 * * *'
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update README.md
+        run: |
+          sed -i 's/\[Profile views\](.*\\/[^)]*)/![Profile views](https:\/\/komarev.com\/badge\/page_views.svg)/' README.md
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Updated profile views" README.md || echo "No changes to commit"
+          git push
